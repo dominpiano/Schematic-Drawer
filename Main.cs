@@ -14,11 +14,17 @@ using System.Windows.Forms;
 namespace SchematicDrawer{
     public partial class Main : Form{
 
+        private bool isRotated = false;
+
         //For resistors
         public Bitmap resistor;
         public Bitmap resistorRotated;
-        private bool isRotated = false;
         private List<Resistor> resistors = new List<Resistor> { };
+
+        //For capacitor
+        public Bitmap capacitor;
+        public Bitmap capacitorRotated;
+        private List<Capacitor> capacitors = new List<Capacitor> { };
 
 
         private int cursorNum;
@@ -39,19 +45,20 @@ namespace SchematicDrawer{
             if (e.KeyChar == 'a'){
                 this.addComponentMenu.Show(Cursor.Position);
             }
+            //Escape to remove any components
             if(e.KeyChar == 27) {
                 this.Cursor = Cursors.Default;
                 cursorNum = 0;
             }
             //Shortcuts to components
-            if(e.KeyChar == 'c') {
+            if(e.KeyChar == 'r') {
                 this.Cursor = new Cursor(resistor.GetHicon());
                 cursorNum = 1;
             }
 
             //Rotate Resistor
-            if(cursorNum == 1) {
-                if(e.KeyChar == 'r') {
+            if(e.KeyChar == 'r') {
+                if(cursorNum == 1) {
                     if (!isRotated) {
                         this.Cursor = new Cursor(resistorRotated.GetHicon());
                         isRotated = !isRotated;
@@ -60,12 +67,34 @@ namespace SchematicDrawer{
                         this.Cursor = new Cursor(resistor.GetHicon());
                         isRotated = !isRotated;
                     }
+                }else if(cursorNum == 2) {
+                    if (!isRotated) {
+                        this.Cursor = new Cursor(capacitorRotated.GetHicon());
+                        isRotated = !isRotated;
+                    }
+                    else {
+                        this.Cursor = new Cursor(capacitor.GetHicon());
+                        isRotated = !isRotated;
+                    }
                 }
             }
             if(e.KeyChar == 'c') {
-                resistors.Clear();
-                Resistor.rCount = 0;
-                this.Refresh();
+                //Initializes the variables to pass to the MessageBox
+                string message = "Do you want to clear the table?";
+                string caption = "Are you sure?";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result;
+
+                //Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+                if (result == System.Windows.Forms.DialogResult.Yes) {
+                    resistors.Clear();
+                    capacitors.Clear();
+                    Resistor.rCount = 0;
+                    Capacitor.cCount = 0;
+                    isRotated = false;
+                    this.Refresh();
+                }
             }
         }
 
@@ -74,6 +103,8 @@ namespace SchematicDrawer{
             if(e.Button == MouseButtons.Left) {
                 if (cursorNum == 1) {
                     resistors.Add(new Resistor(this.PointToClient(Cursor.Position), isRotated));
+                }else if(cursorNum == 2) {
+                    capacitors.Add(new Capacitor(this.PointToClient(Cursor.Position), isRotated));
                 }
             }
             else if(e.Button == MouseButtons.Right) {
@@ -93,12 +124,17 @@ namespace SchematicDrawer{
             this.Cursor = new Cursor(resistor.GetHicon());
             cursorNum = 1;
         }
+        private void capacitorToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = new Cursor(capacitor.GetHicon());
+            cursorNum = 2;
+        }
 
         //Drawing settings
         private void formPaint(object sender, PaintEventArgs paintE){
             Pen pen = new Pen(Color.Black, 2);
             Brush brush = new SolidBrush(Color.Black);
             drawResistor(paintE, pen, brush);
+            drawCapacitor(paintE, pen, brush);
         }
 
         //Drawing components
@@ -113,6 +149,18 @@ namespace SchematicDrawer{
                 }
             }
         }
+        private void drawCapacitor(PaintEventArgs e, Pen pen, Brush brush) {
+            if (capacitors.Count != 0) {
+                foreach (Capacitor c in capacitors) {
+                    e.Graphics.DrawLine(pen, c.line1s, c.line1e);
+                    e.Graphics.DrawLine(pen, c.line2s, c.line2e);
+                    e.Graphics.DrawLine(pen, c.line3s, c.line3e);
+                    e.Graphics.DrawLine(pen, c.line4s, c.line4e);
+                    e.Graphics.DrawString("C", font, brush, c.text);
+                    e.Graphics.DrawString(Convert.ToString(c.capCount), indexFont, brush, c.textIndex);
+                }
+            }
+        }
 
         //Initializing assets
         private void initAssets() {
@@ -120,10 +168,13 @@ namespace SchematicDrawer{
             indexFont = new Font(new FontFamily("Consolas"), 12);
             resistor = new Bitmap(getPath("assets/resistor.png"));
             resistorRotated = new Bitmap(getPath("assets/resistorRotated.png"));
+            capacitor = new Bitmap(getPath("assets/capacitor.png"));
+            capacitorRotated = new Bitmap(getPath("assets/capacitorRotated.png"));
         }
         private string getPath(string path) {
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
         }
+
         
     }
 }

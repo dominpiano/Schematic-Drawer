@@ -45,18 +45,5 @@ namespace SchematicDrawer{
             resCount = rCount;
             
         }
-
-        public void setX(int p) {
-            x = p;
-        }
-        public void setY(int p) {
-            y = p;
-        }
-
-        public void setPos(int p1, int p2) {
-            x = p1;
-            y = p1;
-        }
-
     }
 }

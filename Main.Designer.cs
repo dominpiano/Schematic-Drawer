@@ -45,25 +45,26 @@ namespace SchematicDrawer
             this.capacitorToolStripMenuItem,
             this.inductorToolStripMenuItem});
             this.addComponentMenu.Name = "addComponentMenu";
-            this.addComponentMenu.Size = new System.Drawing.Size(126, 70);
+            this.addComponentMenu.Size = new System.Drawing.Size(181, 92);
             // 
             // resistorToolStripMenuItem
             // 
             this.resistorToolStripMenuItem.Name = "resistorToolStripMenuItem";
-            this.resistorToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.resistorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.resistorToolStripMenuItem.Text = "Resistor";
             this.resistorToolStripMenuItem.Click += new System.EventHandler(this.resistorToolStripMenuItem_Click);
             // 
             // capacitorToolStripMenuItem
             // 
             this.capacitorToolStripMenuItem.Name = "capacitorToolStripMenuItem";
-            this.capacitorToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.capacitorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.capacitorToolStripMenuItem.Text = "Capacitor";
+            this.capacitorToolStripMenuItem.Click += new System.EventHandler(this.capacitorToolStripMenuItem_Click);
             // 
             // inductorToolStripMenuItem
             // 
             this.inductorToolStripMenuItem.Name = "inductorToolStripMenuItem";
-            this.inductorToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.inductorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.inductorToolStripMenuItem.Text = "Inductor";
             // 
             // Main
