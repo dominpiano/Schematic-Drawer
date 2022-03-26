@@ -66,6 +66,7 @@ namespace SchematicDrawer
             this.inductorToolStripMenuItem.Name = "inductorToolStripMenuItem";
             this.inductorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.inductorToolStripMenuItem.Text = "Inductor";
+            this.inductorToolStripMenuItem.Click += new System.EventHandler(this.inductorToolStripMenuItem_Click);
             // 
             // Main
             // 

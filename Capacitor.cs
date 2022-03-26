@@ -13,7 +13,6 @@ namespace SchematicDrawer {
 
         public int x, y;
         public Point line1s, line1e, line2s, line2e, line3s, line3e, line4s, line4e, text, textIndex;
-        public Rectangle rect;
         public static int cCount = 0;
         public int capCount;
 
